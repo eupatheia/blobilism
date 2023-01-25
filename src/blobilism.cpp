@@ -12,15 +12,15 @@
 using namespace tinygl;
 
 // represents a 3-tuple RGB color as float values from 0 to 1
-struct rgb {
+struct RGB {
   float red;
   float green;
   float blue;
 };
 
 // stores info for one circle
-struct circle {
-  struct rgb color;
+struct Circle {
+  struct RGB color;
   float alpha;
   int size;  // diameter
   float x;
@@ -37,10 +37,10 @@ class MyWindow : public Window {
     }
 
     // responds to mouse movement
-    virtual void mouseMotion (int x, int y, int dx, int dy) override {
+    virtual void mouseMotion(int x, int y, int dx, int dy) override {
       if (mouseIsDown(GLFW_MOUSE_BUTTON_LEFT)) {
         // store a circle with the current color, transparency, size, x, y
-        struct circle newCircle = {{_color.red, _color.green, _color.blue},
+        struct Circle newCircle = {{_color.red, _color.green, _color.blue},
                                     _alpha, _size, (float) x, (float) y};
         // add new circle to list of existing circles
         _drawnCircles.push_back(newCircle);
@@ -52,7 +52,7 @@ class MyWindow : public Window {
       if (button == GLFW_MOUSE_BUTTON_LEFT) {
         float mx = mouseX();  // current mouse pos x
         float my = mouseY();  // current mouse pos y
-        // if distance between mouse and each color circle is less than radius,
+        // if distance between mouse and a color circle is less than radius,
         // color has been clicked
         for (int i = 0; i < 4; i++) {
           if (computeDistance(mx, my, width() * 0.2f * (i + 1), 35) < 25) {
@@ -107,7 +107,7 @@ class MyWindow : public Window {
 
       // draw pallette
       color(0.1f, 0.1f, 0.1f);
-      square(width()/2.0f, 35, width(), 70);
+      square(width() / 2.0f, 35, width(), 70);
       for (int i = 0; i < 4; i++) {
         color(_palette[i].red, _palette[i].green, _palette[i].blue);
         circle(width() * 0.2f * (i + 1), 35, 50);
@@ -122,13 +122,13 @@ class MyWindow : public Window {
     }
 
   private:
-    struct rgb _color = {0.1f, 0.1f, 0.1f}; // current color
+    struct RGB _color = {0xC9 / 255.0f, 0x89 / 255.0f, 0x08 / 255.0f}; // current color
     float _alpha = 1.0f; // current transparency
-    int _size = 20; // current circle size
-    // list of circles to draw each frame
-    std::vector<struct circle> _drawnCircles;
+    int _size = 20; // current circle diameter
+    // dynamic list of circles to draw during each frame
+    std::vector<struct Circle> _drawnCircles;
     // list of palette colors
-    struct rgb _palette[4] = {{0xC8 / 255.0f, 0x86 / 255.0f, 0x65 / 255.0f},
+    struct RGB _palette[4] = {{0xC9 / 255.0f, 0x89 / 255.0f, 0x08 / 255.0f},
                               {0xB4 / 255.0f, 0x32 / 255.0f, 0x1D / 255.0f},
                               {0x56 / 255.0f, 0x72 / 255.0f, 0x7B / 255.0f},
                               {0xC5 / 255.0f, 0xBF / 255.0f, 0xBA / 255.0f}};
